@@ -1,0 +1,39 @@
+# This is a Borland Makefile for Turbo C 2.01, not GNU
+
+CC=C:\TC\TCC.EXE
+LINK=C:\TC\TLINK.EXE
+CRT=C:\TC\LIB\C0S.OBJ
+LIBC=C:\TC\LIB\CS.LIB
+
+CFILES=MAIN.C GAME.C MINE.C
+CASMFILES=IO.C SOUND.C TIMER.C VIDEO.C
+
+OBJFILES=MAIN.OBJ GAME.OBJ MINE.OBJ IO.OBJ SOUND.OBJ TIMER.OBJ VIDEO.OBJ
+
+LDFLAGS=
+CFLAGS=
+
+!if $d(DEBUG)
+LDFLAGS=/l
+CFLAGS=$(CFLAGS) -v -y
+!endif
+
+all: clean build link
+  echo "Done!"
+
+link: MINES.EXE
+
+MINES.EXE: $(OBJFILES)
+  $(LINK) $(LDFLAGS) $(CRT) $(OBJFILES),MINES.EXE,MINES.MAP,$(LIBC)
+
+build: $(CFILES) $(CASMFILES)
+  echo "Starting compilation..."
+  $(CC) $(CFLAGS) -c $(CFILES)
+  $(CC) $(CFLAGS) -B -c $(CASMFILES)
+
+clean:
+  echo "clean"
+  del *.obj
+  del *.exe
+  del *.map
+  del *.asm
